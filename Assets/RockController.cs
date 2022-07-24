@@ -8,8 +8,8 @@ public class RockController : MonoBehaviour
     [Range(0, 10)] public float range;
     [HideInInspector] public bool isMoving;
 
+    public string letter = "";
     public int damagePoints = 3;
-    private bool pickable = false;
     private bool picked = false;
     public GameObject rockObject, noteObject, eKey;
     private AudioSource audioSource;
@@ -38,12 +38,14 @@ public class RockController : MonoBehaviour
             {
                 if (Vector2.Distance(player.transform.position, this.transform.position) <= range)
                 {
-                    pickable = true;
                     eKey.gameObject.SetActive(true);
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         picked = true;
+                        if (PlayerPrefs.GetInt("wordle") == 0)
+                            PlayerPrefs.SetInt("photos", PlayerPrefs.GetInt("photos") + 1);
                         Destroy(noteObject);
+                        PlayerPrefs.SetString("discovered-letters", PlayerPrefs.GetString("discovered-letters") + letter + ",");
                     }
                 }
             }
